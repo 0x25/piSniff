@@ -155,3 +155,10 @@ nc -l -p 9999 | wireshark -k -S -i-
 
 ```
 
+<p align="center">
+<h1> View</h1>
+<img src="https://github.com/0x25/piSniff/blob/master/Capture1.PNG" alt="rapsberry pisniff">
+<h1> wireshark in the attacker remote PC
+<img src="https://github.com/0x25/piSniff/blob/master/Capture3.PNG" alt="wireshark pisniff">
+</p>
+
