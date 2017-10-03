@@ -3,7 +3,7 @@
 <img src="https://github.com/0x25/piSniff/blob/master/logo.PNG" alt="piSniff">
 </p>
 
-# piSniff
+# piSniff [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
 sniff packet with your Raspberry and access it with wifi
 
 ```
