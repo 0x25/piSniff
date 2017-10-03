@@ -1,6 +1,6 @@
 
 <p align="center">
-![piSniff](https://github.com/0x25/piSniff/blob/master/logo.PNG)
+<img src="https://github.com/0x25/piSniff/blob/master/logo.PNG" alt="piSniff">
 </p>
 
 # piSniff
