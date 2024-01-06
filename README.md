@@ -18,12 +18,13 @@ client ------ [eth0]raspberry[usb:eth1] ----- server
 
 INSTALL ACCESS POINT
 
-hostap:wifi access point
-dnsmaq:dns & dhcp server 
+# hostap:wifi access point
+# dnsmaq:dns & dhcp server 
+# bridge-utils: bridge
+# tcpdump ncat : net tools
 
 sudo apt-get -y install dnsmasq hostapd
-
-sudo echo "denyinterfaces wlan0" >> /etc/dhcpcd.conf
+sudo apt-get -y install bridge-utils tcpdump ncat
 
 sudo nano /etc/network/interfaces.d/wlan0
 ----------------
@@ -33,14 +34,10 @@ iface wlan0 inet static
     netmask 255.255.255.0
     network 172.24.1.0
     broadcast 172.24.1.255
-#    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
 ----------------
 
-
-sudo service dhcpcd restart
-
 sudo ifdown wlan0; sudo ifup wlan0
-
+ip a
 
 CONFIGURE AP
 
@@ -53,7 +50,7 @@ interface=wlan0
 driver=nl80211
 
 # This is the name of the network
-ssid=Pi3-AP
+ssid=Pi4-AP
 
 # Use the 2.4GHz band
 hw_mode=g
@@ -103,7 +100,7 @@ sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
 sudo nano /etc/dnsmasq.conf 
 ----------------------
 interface=wlan0      # Use interface wlan0  
-listen-address=172.24.1.1 # Explicitly specify the address to listen on  
+#listen-address=172.24.1.1 # Explicitly specify the address to listen on // conflict with "interface"  
 bind-interfaces      # Bind to the interface to make sure we aren't sending things elsewhere  
 #server=8.8.8.8       # Forward DNS requests to Google DNS  
 domain-needed        # Don't forward short names  
@@ -113,17 +110,23 @@ dhcp-range=172.24.1.50,172.24.1.150,12h # Assign IP addresses between 172.24.1.5
 
 START
 
-sudo service hostapd start  
+sudo service hostapd start
 sudo service dnsmasq start
+
+# if you get "masked" error run
+sudo systemctl unmask hostapd
+sudo systemctl enable hostapd
+sudo systemctl start hostapd 
 
 
 CONFIGURE BRIDGE eth0 eth1
+# mount bridge will loose the eth connexion
+# switch to wifi access
 
-
-sudo apt-get -y install bridge-utils
-
-sudo brctl addbr br0
-sudo brctl addif br0 eth0 eth1
+sudo brctl addbr br0       
+sudo brctl addif br0 eth0
+sudo brctl addif br0 eth1
+sudo brctl show
 
 sudo nano /etc/network/interfaces.d/eth0
 ------------
@@ -140,6 +143,8 @@ sudo nano /etc/network/interfaces.d/br0
 iface br0 inet manuel
 bridge_ports eth0 eth1
 ------------
+
+sudo ifconfig br0 up
 
 
 EXPORT PCAP TO HOST
